@@ -1,12 +1,14 @@
 {
-  "name": "fake-xml-http-request",
-  "version": "2.1.1",
+  "name": "@geoffzhu/fake-xhr",
+  "version": "0.0.1",
   "description": "test infrastructure for a fake XMLHttpRequest object",
   "main": "fake_xml_http_request.js",
   "module": "./src/fake-xml-http-request.js",
-  "repository": "https://github.com/trek/FakeXMLHttpRequest.git",
+  "repository": "https://github.com/GeoffZhu/FakeXMLHttpRequest.git",
   "scripts": {
-    "test": "esperanto -i src/fake-xml-http-request.js -t umd -b -n FakeXMLHttpRequest -o fake_xml_http_request.js && ./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
+    "build": "rollup --config rollup.config.js",
+    "dev": "rollup --config rollup.config.js -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": ">=4"
@@ -14,15 +16,20 @@
   "author": {
     "name": "Trek Glowacki"
   },
-  "homepage": "https://github.com/trek/FakeXMLHttpRequest",
+  "homepage": "https://github.com/GeoffZhu/FakeXMLHttpRequest",
   "license": "MIT",
   "devDependencies": {
-    "esperanto": "^0.6.15",
-    "karma": "^1.6.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-firefox-launcher": "1.0.1",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-qunit": "^1.2.1",
-    "qunitjs": "^1.0.0"
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-private-methods": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "rollup": "^2.33.2"
+  },
+  "dependencies": {
+    "mitt": "^2.1.0",
+    "query-string": "^6.13.7"
   }
 }

@@ -16,16 +16,16 @@ number, a headers object, and a text response body:
 
 ```javascript
 // simulate successful response
-import FakeXMLHttpRequest from "fake-xml-http-request";
+import fakeXHR from "fake-xhr";
 
-let xhr = new FakeXMLHttpRequest();
+let xhr = new fakeXHR.XMLHttpRequest();
 xhr.respond(200, {"Content-Type": "application/json"}, '{"key":"value"}');
 xhr.status; // 200
 xhr.statusText; // "OK"
 xhr.responseText; // '{"key":"value"}'
 
 // simulate failed response
-xhr = new FakeXMLHttpRequest();
+xhr = new fakeXHR.XMLHttpRequest();
 xhr.abort();
 ```
 

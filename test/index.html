@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../dist/index.js"></script>
+</head>
+<body>
+  <script>
+    let server = new FakeXHR.XMLHttpRequestServer('127.0.0.1:8080');
+    server.on('/path', (ctx) => {
+      ctx.xhr.respond(200, {}, JSON.stringify({})); 
+    });
+  </script>
+  <script>
+    let xhr = new FakeXHR.XMLHttpRequest();
+    xhr.open('POST', 'http://127.0.0.1:8080/path', true);
+    xhr.addEventListener('load', resp => {
+      console.log(resp.target);
+    });
+    xhr.send({ a: 1 });
+  </script>
+</body>
+</html>

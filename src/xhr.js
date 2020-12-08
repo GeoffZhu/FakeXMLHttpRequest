@@ -292,6 +292,20 @@ var FakeXMLHttpRequestProto = {
     }
 
     this.dispatchEvent(new _Event("loadstart", false, false, this));
+    
+    if (window.__fakeXhr__) {
+      let urlObj;
+      if (/^http|https/.test(this.url)) {
+        urlObj = new URL(this.url);
+      } else {
+        urlObj = new URL(location.origin + this.url);
+      }
+
+      if (window.__fakeXhr__[urlObj.host])  window.__fakeXhr__[urlObj.host](this);
+      else {
+        ctx.xhr.respond(404, {}, {}); 
+      };
+    }
   },
 
   /*
@@ -510,4 +524,7 @@ function verifyResponseBodyType(body) {
         throw error;
     }
 }
-export default FakeXMLHttpRequest;
+
+export {
+  FakeXMLHttpRequest
+};

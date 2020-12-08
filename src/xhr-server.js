@@ -2,7 +2,7 @@ import mitt from 'mitt';
 import queryString from 'query-string';
 
 class FakeXMLHttpRequestServer {
-  constructor(host, config) {
+  constructor(host = location.host, config) {
     this.host = host;
     this.config = config;
     this.emitter = mitt();
@@ -16,7 +16,13 @@ class FakeXMLHttpRequestServer {
     this.emitter.off(...args);
   }
   emit(xhr) {
-    let url = new URL(xhr.url);
+    let url;
+    if (/^http|https/.test(xhr.url)) {
+      url = new URL(xhr.url);
+    } else {
+      url = new URL(location.origin + xhr.url);
+    }
+
     this.emitter.emit(url.pathname, {
       url: xhr.url,
       method: xhr.method,

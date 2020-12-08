@@ -308,7 +308,7 @@
         }
 
         if (window.__fakeXhr__[urlObj.host]) window.__fakeXhr__[urlObj.host](this);else {
-          ctx.xhr.respond(404, {}, {});
+          this.respond(404, {}, {});
         }
       }
     },
@@ -1031,7 +1031,7 @@
   });
 
   class FakeXMLHttpRequestServer {
-    constructor(host, config) {
+    constructor(host = location.host, config) {
       this.host = host;
       this.config = config;
       this.emitter = mitt();
@@ -1048,7 +1048,14 @@
     }
 
     emit(xhr) {
-      let url = new URL(xhr.url);
+      let url;
+
+      if (/^http|https/.test(xhr.url)) {
+        url = new URL(xhr.url);
+      } else {
+        url = new URL(location.origin + xhr.url);
+      }
+
       this.emitter.emit(url.pathname, {
         url: xhr.url,
         method: xhr.method,

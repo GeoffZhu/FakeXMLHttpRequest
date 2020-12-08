@@ -1,8 +1,8 @@
 {
   "name": "@geoffzhu/fake-xhr",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "test infrastructure for a fake XMLHttpRequest object",
-  "main": "fake_xml_http_request.js",
+  "main": "dist/index.js",
   "module": "./src/fake-xml-http-request.js",
   "repository": "https://github.com/GeoffZhu/FakeXMLHttpRequest.git",
   "scripts": {

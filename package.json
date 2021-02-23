@@ -1,9 +1,9 @@
 {
   "name": "@geoffzhu/fake-xhr",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "test infrastructure for a fake XMLHttpRequest object",
   "main": "dist/index.js",
-  "module": "./src/fake-xml-http-request.js",
+  "module": "./src/index.js",
   "repository": "https://github.com/GeoffZhu/FakeXMLHttpRequest.git",
   "scripts": {
     "build": "rollup --config rollup.config.js",

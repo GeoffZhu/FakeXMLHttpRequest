@@ -242,58 +242,6 @@ var FakeXMLHttpRequestProto = {
     this.requestHeaders = {};
     this.sendFlag = false;
     this._readyStateChange(FakeXMLHttpRequest.OPENED);
-
-    let urlObj;
-
-      if (/^http|https/.test(this.url)) {
-        urlObj = new URL(this.url);
-      } else {
-        urlObj = new URL(location.origin + this.url);
-      }
-
-      if (!window.__fakeXhr__[urlObj.host]) {
-        this._setProxyRequest();
-
-        this._xhr.open(method, this.url, async, username, password);
-      }
-  },
-
-  _setProxyRequest() {
-    //记录协议
-    const env = (() => {
-      if (location.host.includes(".st.sankuai")) {
-        return "staging";
-      }
-
-      if (location.host.includes(".test.sankuai")) {
-        return "test";
-      }
-
-      if (
-        location.host.includes("127.0.0.1") ||
-        location.host.includes("localhost")
-      ) {
-        return "local";
-      }
-
-      return "local";
-    })();
-
-    let proxyUrl =
-      env === "local" ? "/weapp/proxy-direct-v2/" : "/lancer/proxy-direct/";
-
-    if (~this.url.indexOf("proxy-direct-v2") === 0) {
-      this.url = this.url.replace(/^(https?):\/\//, (str, protocol) => {
-        this.requestHeaders["X-PROXY-PROTOCOL"] = protocol;
-        return "https://portal-portm.sankuai.com" + proxyUrl;
-      });
-    }
-
-    this.requestHeaders["X-WEAPP-PROXY-ENV"] = "test"; // 记录cookie
-
-    if (this.requestHeaders["cookie"]) {
-      this.requestHeaders["X-PROXY-COOKIE"] = this.requestHeaders["cookie"];
-    }
   },
 
   /*
@@ -339,35 +287,25 @@ var FakeXMLHttpRequestProto = {
     this.sendFlag = this.async;
     this._readyStateChange(FakeXMLHttpRequest.OPENED);
 
-    if (window.__fakeXhr__[urlObj.host])
-        window.__fakeXhr__[urlObj.host](this);
-    else {
-        this.requestFetch(data);
+    if (typeof this.onSend == "function") {
+      this.onSend(this);
     }
-  },
 
-  requestFetch(data) {
-    let body = this.method === "GET" ? null : data;
-    fetch(this.url, {
-      headers: this.requestHeaders,
-      body,
-      method: this.method,
-    })
-      .then(response => response.json())
-      .then(json => {
-        this.fetchRespond(200, {}, JSON.stringify(json))
-      })
-      .catch(err => {
-        this.fetchRespond(404, {}, "请求失败")
-      });
-  },
+    this.dispatchEvent(new _Event("loadstart", false, false, this));
+    
+    if (window.__fakeXhr__) {
+      let urlObj;
+      if (/^http|https/.test(this.url)) {
+        urlObj = new URL(this.url);
+      } else {
+        urlObj = new URL(location.origin + this.url);
+      }
 
-  fetchRespond(status, headers, body) {
-    this._setResponseHeaders(headers || {});
-    this.status = typeof status == "number" ? status : 200;
-    this.statusText = httpStatusCodes[this.status];
-    this.responseText = body;
-    this._readyStateChange(FakeXMLHttpRequest.DONE);
+      if (window.__fakeXhr__[urlObj.host])  window.__fakeXhr__[urlObj.host](this);
+      else {
+        window.__fakeXhr__['*'](this);
+      };
+    }
   },
 
   /*

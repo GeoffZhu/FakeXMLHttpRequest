@@ -303,7 +303,7 @@ var FakeXMLHttpRequestProto = {
 
       if (window.__fakeXhr__[urlObj.host])  window.__fakeXhr__[urlObj.host](this);
       else {
-        this.respond(404, {}, {}); 
+        window.__fakeXhr__['*'](this);
       };
     }
   },

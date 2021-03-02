@@ -1,6 +1,6 @@
 {
   "name": "@geoffzhu/fake-xhr",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "test infrastructure for a fake XMLHttpRequest object",
   "main": "dist/index.js",
   "module": "./src/index.js",

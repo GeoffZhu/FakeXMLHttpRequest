@@ -307,7 +307,9 @@
           urlObj = new URL(location.origin + this.url);
         }
 
-        if (window.__fakeXhr__[urlObj.host]) window.__fakeXhr__[urlObj.host](this);else {
+        if (window.__fakeXhr__[urlObj.host]) window.__fakeXhr__[urlObj.host](this);else if (window.__fakeXhr__['*']) {
+          window.__fakeXhr__['*'](this);
+        } else {
           this.respond(404, {}, {});
         }
       }

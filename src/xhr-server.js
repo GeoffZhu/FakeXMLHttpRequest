@@ -33,7 +33,7 @@ class FakeXMLHttpRequestServer {
     });
   }
   destory() {
-    window.__fakeXhr__ = {};
+    delete window.__fakeXhr__[this.host];
   }
 };
 

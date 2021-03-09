@@ -1068,6 +1068,10 @@
       });
     }
 
+    destory() {
+      delete window.__fakeXhr__[this.host];
+    }
+
   }
 
   window.__fakeXhr__ = {};

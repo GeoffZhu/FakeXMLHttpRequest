@@ -32,6 +32,9 @@ class FakeXMLHttpRequestServer {
       xhr
     });
   }
+  destory() {
+    window.__fakeXhr__ = {};
+  }
 };
 
 export {
